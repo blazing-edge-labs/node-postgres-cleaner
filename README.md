@@ -29,7 +29,7 @@ Running tests
 -------------
 
 ```shell
-$ mocha test
+$ npm test
 ```
 
 For tests you need postgres database running.
