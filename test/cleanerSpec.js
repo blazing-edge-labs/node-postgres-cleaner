@@ -16,7 +16,7 @@ function createDatabase(params) {
 
 function dropDatabase(params) {
   return function(callback, results) {
-    var q = 'DROP DATABASE ' + params.database;
+    var q = 'DROP DATABASE IF EXISTS ' + params.database;
     results.connectPostgres[0].query(q, callback);
   };
 }
