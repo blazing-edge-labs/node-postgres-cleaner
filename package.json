@@ -1,0 +1,23 @@
+{
+  "name": "node-postgres-cleaner",
+  "version": "0.0.1",
+  "description": "Easy postgres cleaner for node.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "keywords": [
+    "postgres",
+    "cleaner"
+  ],
+  "devDependencies": {
+    "mocha": "^2.3.3",
+    "pg": "^4.4.3",
+    "should": "^7.1.1"
+  },
+  "dependencies": {
+    "async": "^1.5.0"
+  },
+  "author": "Ivan Blazevic",
+  "license": "MIT"
+}
