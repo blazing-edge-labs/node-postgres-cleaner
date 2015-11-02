@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner)
+
 Postgres Cleaner
 ========================
 Extremely simple way to clean your postgres database.
