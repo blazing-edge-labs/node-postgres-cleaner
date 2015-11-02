@@ -1,5 +1,5 @@
 {
-  "name": "node-postgres-cleaner",
+  "name": "postgres-cleaner",
   "version": "0.0.1",
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
