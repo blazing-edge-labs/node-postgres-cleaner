@@ -4,7 +4,7 @@
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "node_modules/mocha/bin/mocha test"
   },
   "keywords": [
     "postgres",
