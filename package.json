@@ -1,10 +1,14 @@
 {
   "name": "postgres-cleaner",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/EastCoastProduct/node-postgres-cleaner"
   },
   "keywords": [
     "postgres",
