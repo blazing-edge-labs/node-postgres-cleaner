@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner)
+[![bitHound Score](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner/badges/score.svg)](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner)
 
 Postgres Cleaner
 ========================
