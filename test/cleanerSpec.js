@@ -1,6 +1,8 @@
-var should = require('should'),
-    cleaner = require('../lib/cleaner'),
-    async = require('async');
+'use strict';
+
+var should = require('should');
+var cleaner = require('../lib/cleaner');
+var async = require('async');
 
 var dbHost = process.env.POSTGRES_HOST || 'localhost';
 
@@ -24,14 +26,14 @@ function dropDatabase(params) {
 function createTable(params) {
   return function create(callback, results) {
     var q = 'CREATE TABLE ' + params.table +
-      ' (id SERIAL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));'
+      ' (id SERIAL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));';
     results.connect[0].query(q, callback);
   };
 }
 
 function insertValue(params) {
   return function insert(callback, results) {
-    var q = 'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem\');'
+    var q = 'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem\');';
     results.connect[0].query(q, callback);
   };
 }
@@ -56,11 +58,10 @@ function databaseCleaner(callback, results) {
 
 function connect(params) {
   return function connection(callback, results) {
-    var connectionString = 'postgres://postgres@'
-     + dbHost  + '/'
-     + params.database;
+    var connectionString = 'postgres://postgres@' +
+      dbHost  + '/' + params.database;
     pg.connect(connectionString, callback);
-  }
+  };
 }
 
 describe('postgres', function() {
@@ -69,20 +70,14 @@ describe('postgres', function() {
     async.auto({
       connectPostgres: connect({database: 'postgres'}),
       dropDb:['connectPostgres', dropDatabase({database: 'cleaner'})]
-    }, function(err) {
-      if (err) throw(err);
-      done();
-    });
+    }, done);
   });
 
   before(function(done) {
     async.auto({
       connectPostgres: connect({database: 'postgres'}),
       createDb:['connectPostgres', createDatabase({database: 'cleaner'})]
-    }, function(err) {
-      if (err) throw(err);
-      done();
-    });
+    }, done);
   });
 
   beforeEach(function(done) {
@@ -94,10 +89,7 @@ describe('postgres', function() {
       insert1: ['create1', insertValue({table: 'table1'})],
       insert2: ['create2', insertValue({table: 'table2'})],
       insert3: ['create3', insertValue({table: 'table3'})]
-    }, function(err) {
-      if (err) throw(err);
-      done();
-    });
+    }, done);
   });
 
   it('should clean all tables', function(done) {
@@ -106,7 +98,7 @@ describe('postgres', function() {
       clean: ['connect', databaseCleaner],
       check1: ['clean', checkEmptyTable({table: 'table1'})],
       check2: ['clean', checkEmptyTable({table: 'table2'})],
-      check3: ['clean', checkEmptyTable({table: 'table3'})],
+      check3: ['clean', checkEmptyTable({table: 'table3'})]
     }, function(err, results) {
       if (err) throw(err);
       results.check1.rows.length.should.equal(0);

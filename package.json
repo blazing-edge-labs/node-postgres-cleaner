@@ -4,17 +4,19 @@
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
   "scripts": {
+    "pretest": "eslint .",
     "test": "node_modules/mocha/bin/mocha test"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/EastCoastProduct/node-postgres-cleaner"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EastCoastProduct/node-postgres-cleaner"
   },
   "keywords": [
     "postgres",
     "cleaner"
   ],
   "devDependencies": {
+    "eslint": "^1.9.0",
     "mocha": "^2.3.3",
     "pg": "^4.4.3",
     "should": "^7.1.1"
@@ -22,7 +24,7 @@
   "dependencies": {
     "async": "^1.5.0"
   },
-    "bugs": {
+  "bugs": {
     "url": "https://github.com/EastCoastProduct/node-postgres-cleaner/issues"
   },
   "homepage": "https://github.com/EastCoastProduct/node-postgres-cleaner",
