@@ -38,13 +38,6 @@ function insertValue(params) {
   };
 }
 
-function dropTable(params) {
-  return function drop(callback, results) {
-    var q = 'DROP TABLE ' + params.table;
-    results.connect[0].query(q, callback);
-  };
-}
-
 function checkEmptyTable(params) {
   return function check(callback, results) {
     var q = 'SELECT * FROM ' + params.table;
@@ -53,11 +46,11 @@ function checkEmptyTable(params) {
 }
 
 function databaseCleaner(callback, results) {
-  cleaner(results.connect[0], callback);
+  cleaner(results.connect[0],       callback);
 }
 
 function connect(params) {
-  return function connection(callback, results) {
+  return function connection(callback) {
     var connectionString = 'postgres://postgres@' +
       dbHost  + '/' + params.database;
     pg.connect(connectionString, callback);
@@ -101,7 +94,7 @@ describe('postgres', function() {
       check3: ['clean', checkEmptyTable({table: 'table3'})]
     }, function(err, results) {
       if (err) throw(err);
-      results.check1.rows.length.should.equal(0);
+      should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
       done();
