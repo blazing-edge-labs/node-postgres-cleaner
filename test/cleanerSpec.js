@@ -45,8 +45,14 @@ function checkEmptyTable(params) {
   };
 }
 
-function databaseCleaner(callback, results) {
-  cleaner(results.connect[0],       callback);
+// function databaseCleanerDeprecated(callback, results) {
+//   cleaner(results.connect[0], callback);
+// }
+
+function databaseCleaner(options) {
+  return function(callback, results) {
+    cleaner(options, results.connect[0], callback);
+  }
 }
 
 function connect(params) {
@@ -59,14 +65,14 @@ function connect(params) {
 
 describe('postgres', function() {
 
-  before(function(done) {
+  beforeEach(function(done) {
     async.auto({
       connectPostgres: connect({database: 'postgres'}),
       dropDb:['connectPostgres', dropDatabase({database: 'cleaner'})]
     }, done);
   });
 
-  before(function(done) {
+  beforeEach(function(done) {
     async.auto({
       connectPostgres: connect({database: 'postgres'}),
       createDb:['connectPostgres', createDatabase({database: 'cleaner'})]
@@ -85,10 +91,10 @@ describe('postgres', function() {
     }, done);
   });
 
-  it('should clean all tables', function(done) {
+  it('should delete all tables', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
-      clean: ['connect', databaseCleaner],
+      clean: ['connect', databaseCleaner({type: 'delete'})],
       check1: ['clean', checkEmptyTable({table: 'table1'})],
       check2: ['clean', checkEmptyTable({table: 'table2'})],
       check3: ['clean', checkEmptyTable({table: 'table3'})]
