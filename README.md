@@ -24,15 +24,30 @@ Usage
 ```javascript
 var cleaner = require('postgres-cleaner');
 
-// database is a connection object
-cleaner(database, callback);
+var options = { type: 'delete' };
+
+// db      - database connection object
+// options - cleaner options
+cleaner(options, db, callback);
 ```
+
+Options
+-------
+    type(required)- 'delete'   - use delete to clear all tables and restart all
+                                 sequences in database
+                  - 'truncate' - use truncate to clear all tables in database
+                                 and restart sequences
+
+What should I use?
+
+Truncate should be faster if you can use it. If you have relations in tables only delete
+will work for you, so go with delete.
 
 Running tests
 -------------
 
 ```shell
-$ npm test
+$ gulp test
 ```
 
 For tests you need postgres database running.
