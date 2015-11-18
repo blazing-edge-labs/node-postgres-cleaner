@@ -33,17 +33,25 @@ function createTable(params) {
   };
 }
 
+function createTableNoId(params) {
+  return function create(callback, results) {
+    var q = 'CREATE TABLE "' + params.table +
+      '" (name VARCHAR(255));';
+    results.connect[0].query(q, callback);
+  };
+}
+
 function insertValue(params) {
   return function insert(callback, results) {
-    var q = 'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem1\');' +
-            'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem2\');';
+    var q = 'INSERT INTO "' + params.table + '" (name) VALUES (\'lorem1\');' +
+            'INSERT INTO "' + params.table + '" (name) VALUES (\'lorem2\');';
     results.connect[0].query(q, callback);
   };
 }
 
 function checkEmptyTable(params) {
   return function check(callback, results) {
-    var q = 'SELECT * FROM ' + params.table;
+    var q = 'SELECT * FROM "' + params.table + '";';;
     results.connect[0].query(q, callback);
   };
 }
@@ -88,7 +96,8 @@ describe('postgres', function() {
       connect: connect({database: 'cleaner'}),
       create1: ['connect', createTable({table: 'table1'})],
       create2: ['connect', createTable({table: 'table2'})],
-      create3: ['connect', createTable({table: 'table3'})]
+      create3: ['connect', createTable({table: 'table3'})],
+      create4: ['connect', createTableNoId({table: 'tableNoId'})]
     }, done);
   });
 
@@ -97,7 +106,8 @@ describe('postgres', function() {
       connect: connect({database: 'cleaner'}),
       insert1: ['connect', insertValue({table: 'table1'})],
       insert2: ['connect', insertValue({table: 'table2'})],
-      insert3: ['connect', insertValue({table: 'table3'})]
+      insert3: ['connect', insertValue({table: 'table3'})],
+      insert4: ['connect', insertValue({table: 'tableNoId'})]
     }, done);
   });
 
@@ -192,7 +202,31 @@ describe('postgres', function() {
     });
   });
 
+  // covers issue #1
   it('should skip tables delete', function(done) {
+    async.auto({
+      connect: connect({database: 'cleaner'}),
+      clean: [
+        'connect',
+        databaseCleaner({type: 'delete', skipTables: ['tableNoId']})
+      ],
+      check1: ['clean', checkEmptyTable({table: 'table1'})],
+      check2: ['clean', checkEmptyTable({table: 'tableNoId'})],
+      check3: ['clean', checkEmptyTable({table: 'table3'})],
+      checkSeq1: ['clean', checkSequence({table: 'table1'})],
+      checkSeq3: ['clean', checkSequence({table: 'table3'})]
+    }, function(err, results) {
+      if (err) throw(err);
+      should(results.check1.rows.length).equal(0);
+      results.check2.rows.length.should.equal(2);
+      results.check3.rows.length.should.equal(0);
+      results.checkSeq1.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('1');
+      done();
+    });
+  });
+
+  it('should not add skipped sequence if it didn\'t exit', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
       clean: [
