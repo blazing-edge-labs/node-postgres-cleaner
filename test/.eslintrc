@@ -1,4 +1,8 @@
 ---
+  rules:
+    max-nested-callbacks:
+      - 2
+      - 5
   globals:
     before: true
     after: true
