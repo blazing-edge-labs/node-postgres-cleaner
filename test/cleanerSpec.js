@@ -7,6 +7,8 @@ var async = require('async');
 var dbHost = process.env.POSTGRES_HOST || 'localhost';
 
 var pg = require('pg');
+// increase pool size just for tests
+pg.defaults.poolSize = 20;
 
 // helper functions to be used with async to help making tests easier
 function createDatabase(params) {
@@ -33,7 +35,8 @@ function createTable(params) {
 
 function insertValue(params) {
   return function insert(callback, results) {
-    var q = 'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem\');';
+    var q = 'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem1\');' +
+            'INSERT INTO ' + params.table + ' (name) VALUES (\'lorem2\');';
     results.connect[0].query(q, callback);
   };
 }
@@ -113,9 +116,9 @@ describe('postgres', function() {
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
-      results.checkSeq1.rows.length.should.equal(1);
-      results.checkSeq2.rows.length.should.equal(1);
-      results.checkSeq3.rows.length.should.equal(1);
+      results.checkSeq1.rows[0].nextval.should.equal('1');
+      results.checkSeq2.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('1');
       done();
     });
   });
@@ -135,9 +138,34 @@ describe('postgres', function() {
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
-      results.checkSeq1.rows.length.should.equal(1);
-      results.checkSeq2.rows.length.should.equal(1);
-      results.checkSeq3.rows.length.should.equal(1);
+      results.checkSeq1.rows[0].nextval.should.equal('1');
+      results.checkSeq2.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('1');
+      done();
+    });
+  });
+
+  it('should skip tables truncate', function(done) {
+    async.auto({
+      connect: connect({database: 'cleaner'}),
+      clean: [
+        'connect',
+        databaseCleaner({type: 'truncate', skipTables: ['table1']})
+      ],
+      check1: ['clean', checkEmptyTable({table: 'table1'})],
+      check2: ['clean', checkEmptyTable({table: 'table2'})],
+      check3: ['clean', checkEmptyTable({table: 'table3'})],
+      checkSeq1: ['clean', checkSequence({table: 'table1'})],
+      checkSeq2: ['clean', checkSequence({table: 'table2'})],
+      checkSeq3: ['clean', checkSequence({table: 'table3'})]
+    }, function(err, results) {
+      if (err) throw(err);
+      should(results.check1.rows.length).equal(2);
+      results.check2.rows.length.should.equal(0);
+      results.check3.rows.length.should.equal(0);
+      results.checkSeq1.rows[0].nextval.should.equal('4');
+      results.checkSeq2.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('1');
       done();
     });
   });
@@ -157,9 +185,34 @@ describe('postgres', function() {
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
-      results.checkSeq1.rows.length.should.equal(1);
-      results.checkSeq2.rows.length.should.equal(1);
-      results.checkSeq3.rows.length.should.equal(1);
+      results.checkSeq1.rows[0].nextval.should.equal('1');
+      results.checkSeq2.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('1');
+      done();
+    });
+  });
+
+  it('should skip tables delete', function(done) {
+    async.auto({
+      connect: connect({database: 'cleaner'}),
+      clean: [
+        'connect',
+        databaseCleaner({type: 'delete', skipTables: ['table3']})
+      ],
+      check1: ['clean', checkEmptyTable({table: 'table1'})],
+      check2: ['clean', checkEmptyTable({table: 'table2'})],
+      check3: ['clean', checkEmptyTable({table: 'table3'})],
+      checkSeq1: ['clean', checkSequence({table: 'table1'})],
+      checkSeq2: ['clean', checkSequence({table: 'table2'})],
+      checkSeq3: ['clean', checkSequence({table: 'table3'})]
+    }, function(err, results) {
+      if (err) throw(err);
+      should(results.check1.rows.length).equal(0);
+      results.check2.rows.length.should.equal(0);
+      results.check3.rows.length.should.equal(2);
+      results.checkSeq1.rows[0].nextval.should.equal('1');
+      results.checkSeq2.rows[0].nextval.should.equal('1');
+      results.checkSeq3.rows[0].nextval.should.equal('4');
       done();
     });
   });
