@@ -51,7 +51,7 @@ function insertValue(params) {
 
 function checkEmptyTable(params) {
   return function check(callback, results) {
-    var q = 'SELECT * FROM "' + params.table + '";';;
+    var q = 'SELECT * FROM "' + params.table + '";';
     results.connect[0].query(q, callback);
   };
 }
@@ -122,7 +122,7 @@ describe('postgres', function() {
       checkSeq2: ['clean', checkSequence({table: 'table2'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
@@ -144,7 +144,7 @@ describe('postgres', function() {
       checkSeq2: ['clean', checkSequence({table: 'table2'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
@@ -169,7 +169,7 @@ describe('postgres', function() {
       checkSeq2: ['clean', checkSequence({table: 'table2'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(2);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
@@ -191,7 +191,7 @@ describe('postgres', function() {
       checkSeq2: ['clean', checkSequence({table: 'table2'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(0);
@@ -216,7 +216,7 @@ describe('postgres', function() {
       checkSeq1: ['clean', checkSequence({table: 'table1'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(2);
       results.check3.rows.length.should.equal(0);
@@ -240,7 +240,7 @@ describe('postgres', function() {
       checkSeq2: ['clean', checkSequence({table: 'table2'})],
       checkSeq3: ['clean', checkSequence({table: 'table3'})]
     }, function(err, results) {
-      if (err) throw(err);
+      should.not.exist(err);
       should(results.check1.rows.length).equal(0);
       results.check2.rows.length.should.equal(0);
       results.check3.rows.length.should.equal(2);
@@ -255,6 +255,7 @@ describe('postgres', function() {
     async.auto({
       connect: connect({database: 'cleaner'})
     }, function(err, results) {
+      should.not.exist(err);
       try {
         cleaner({type: 'wrong'}, results.connect[0], function() {});
       } catch (e) {

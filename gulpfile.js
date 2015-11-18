@@ -27,7 +27,7 @@ gulp.task('lint-test', function() {
 
 gulp.task('lint', ['lint-src', 'lint-test']);
 
-gulp.task('coveralls', function () {
+gulp.task('coveralls', function() {
   return gulp.src('./coverage/lcov.info')
     .pipe(coveralls());
 });
