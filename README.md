@@ -36,10 +36,10 @@ cleaner(options, db, callback);
 
 Options
 -------
-    type - 'delete'   - use delete to clear all tables and restart all
-                        sequences in database
-         - 'truncate' - use truncate to clear all tables in database
-                        and restart sequences
+    type         - 'delete'   - use delete to clear all tables and restart all
+                                sequences in database
+                 - 'truncate' - use truncate to clear all tables in database
+                                and restart sequences
 
     [skipTables] - array of tables to skip deleting from
 
