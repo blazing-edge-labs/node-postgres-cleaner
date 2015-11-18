@@ -24,7 +24,10 @@ Usage
 ```javascript
 var cleaner = require('postgres-cleaner');
 
-var options = { type: 'delete' };
+var options = {
+  type: 'delete',
+  skipTables: ['SequelizeMeta']
+};
 
 // db      - database connection object
 // options - cleaner options
@@ -33,10 +36,12 @@ cleaner(options, db, callback);
 
 Options
 -------
-    type(required)- 'delete'   - use delete to clear all tables and restart all
-                                 sequences in database
-                  - 'truncate' - use truncate to clear all tables in database
-                                 and restart sequences
+    type         - 'delete'   - use delete to clear all tables and restart all
+                                sequences in database
+                 - 'truncate' - use truncate to clear all tables in database
+                                and restart sequences
+
+    [skipTables] - array of tables to skip deleting from
 
 What should I use?
 
