@@ -1,15 +1,15 @@
 language: node_js
 node_js:
-  - "4.1"
-  - "0.12"
+  - "10"
+  - "8"
 addons:
   postgresql: "9.3"
 services:
   - postgresql
 before_script:
-  - npm install -g gulp
+  - yarn
 script:
-  - gulp lint
-  - gulp test
+  - yarn lint
+  - yarn test
 after_script:
-  - gulp coveralls
+  - yarn coverage

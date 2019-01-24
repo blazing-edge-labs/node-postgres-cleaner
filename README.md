@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/EastCoastProduct/node-postgres-cleaner)
-[![Coverage Status](https://coveralls.io/repos/EastCoastProduct/node-postgres-cleaner/badge.svg?branch=master&service=github)](https://coveralls.io/github/EastCoastProduct/node-postgres-cleaner?branch=master)
-[![bitHound Dependencies](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner/badges/dependencies.svg)](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner/master/dependencies/npm)
-[![bitHound Score](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner/badges/score.svg)](https://www.bithound.io/github/EastCoastProduct/node-postgres-cleaner)
+[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner)[![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master)v
 
 Postgres Cleaner
 ========================
@@ -52,7 +49,7 @@ Running tests
 -------------
 
 ```shell
-$ gulp test
+$ yarn test
 ```
 
 For tests you need postgres database running.
