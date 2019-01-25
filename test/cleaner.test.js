@@ -12,21 +12,21 @@ pg.defaults.poolSize = 20;
 
 // helper functions to be used with async to help making tests easier
 function createDatabase(params) {
-  return function(callback, results) {
+  return function(results, callback) {
     var q = 'CREATE DATABASE ' + params.database;
     results.connectPostgres[0].query(q, callback);
   };
 }
 
 function dropDatabase(params) {
-  return function(callback, results) {
+  return function(results, callback) {
     var q = 'DROP DATABASE IF EXISTS ' + params.database;
     results.connectPostgres[0].query(q, callback);
   };
 }
 
 function createTable(params) {
-  return function create(callback, results) {
+  return function create(results, callback) {
     var q = 'CREATE TABLE ' + params.table +
       ' (id SERIAL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));';
     results.connect[0].query(q, callback);
@@ -34,7 +34,7 @@ function createTable(params) {
 }
 
 function createTableNoId(params) {
-  return function create(callback, results) {
+  return function create(results, callback) {
     var q = 'CREATE TABLE "' + params.table +
       '" (name VARCHAR(255));';
     results.connect[0].query(q, callback);
@@ -42,7 +42,7 @@ function createTableNoId(params) {
 }
 
 function insertValue(params) {
-  return function insert(callback, results) {
+  return function insert(results, callback) {
     var q = 'INSERT INTO "' + params.table + '" (name) VALUES (\'lorem1\');' +
             'INSERT INTO "' + params.table + '" (name) VALUES (\'lorem2\');';
     results.connect[0].query(q, callback);
@@ -50,25 +50,25 @@ function insertValue(params) {
 }
 
 function checkEmptyTable(params) {
-  return function check(callback, results) {
+  return function check(results, callback) {
     var q = 'SELECT * FROM "' + params.table + '";';
     results.connect[0].query(q, callback);
   };
 }
 
 function checkSequence(params) {
-  return function check(callback, results) {
+  return function check(results, callback) {
     var q = 'SELECT nextval(\'' + params.table + '_id_seq\');';
     results.connect[0].query(q, callback);
   }
 }
 
-function databaseCleanerDeprecated(callback, results) {
+function databaseCleanerDeprecated(results, callback) {
   cleaner(results.connect[0], callback);
 }
 
 function databaseCleaner(options) {
-  return function(callback, results) {
+  return function(results, callback) {
     cleaner(options, results.connect[0], callback);
   }
 }
@@ -77,6 +77,7 @@ function connect(params) {
   return function connection(callback) {
     var connectionString = 'postgres://postgres@' +
       dbHost  + '/' + params.database;
+
     pg.connect(connectionString, callback);
   };
 }
