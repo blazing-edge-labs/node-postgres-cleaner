@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner)[![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master)v
+[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner) [![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master)
 
 Postgres Cleaner
 ========================
@@ -78,3 +78,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+v
