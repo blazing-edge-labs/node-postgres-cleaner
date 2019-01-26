@@ -28,22 +28,24 @@ var options = {
 
 // db      - database connection object
 // options - cleaner options
-cleaner(options, db, callback);
+cleaner(options, db)
+  .then()
+  .catch()
 ```
 
 Options
 -------
-    type         - 'delete'   - use delete to clear all tables and restart all
-                                sequences in database
-                 - 'truncate' - use truncate to clear all tables in database
+    type         - 'truncate' - DEFAULT: use truncate to clear all tables in database
                                 and restart sequences
+                 - 'delete'   - use delete to clear all tables and restart all
+                                sequences in database
+
 
     [skipTables] - array of tables to skip deleting from
 
 What should I use?
 
-Truncate should be faster if you can use it. If you have relations in tables only delete
-will work for you, so go with delete.
+Truncate should be faster so we use truncate as a default behaviour if type is not provided. Use delete if you have a specific reason to use delete. You can read more about the differences [here](https://stackoverflow.com/questions/139630/whats-the-difference-between-truncate-and-delete-in-sql).
 
 Running tests
 -------------
@@ -78,4 +80,5 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+v
 v
