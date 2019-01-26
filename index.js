@@ -1,3 +1,5 @@
 'use strict'
 
-module.exports = require('./lib/cleaner')
+const util = require('util')
+
+module.exports = util.promisify(require('./lib/cleaner'))

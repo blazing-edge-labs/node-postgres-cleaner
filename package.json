@@ -1,6 +1,6 @@
 {
   "name": "postgres-cleaner",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
   "repository": {
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "nyc --reporter=text mocha --exit",
+    "test": "nyc --reporter=text --reporter=lcov mocha --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "bugs": {

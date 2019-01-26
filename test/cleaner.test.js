@@ -1,7 +1,7 @@
 'use strict'
 
 const should = require('should')
-const cleaner = require('../lib/cleaner')
+const cleaner = require('../')
 const async = require('async')
 
 const dbHost = process.env.POSTGRES_HOST || '127.0.0.1'
@@ -62,13 +62,11 @@ function checkSequence(params) {
   }
 }
 
-function databaseCleanerDeprecated(results, callback) {
-  cleaner(results.connect[0], callback)
-}
-
 function databaseCleaner(options) {
   return function(results, callback) {
-    cleaner(options, results.connect[0], callback)
+    cleaner(options, results.connect[0])
+      .then(r => callback(null, r))
+      .catch(callback)
   }
 }
 
@@ -159,7 +157,7 @@ describe('postgres', function() {
       connect: connect({database: 'cleaner'}),
       clean: [
         'connect',
-        databaseCleaner({type: 'truncate', skipTables: ['table1']}),
+        databaseCleaner({skipTables: ['table1']}),
       ],
       check1: ['clean', checkEmptyTable({table: 'table1'})],
       check2: ['clean', checkEmptyTable({table: 'table2'})],
@@ -173,28 +171,6 @@ describe('postgres', function() {
       results.check2.rows.length.should.equal(0)
       results.check3.rows.length.should.equal(0)
       results.checkSeq1.rows[0].nextval.should.equal('4')
-      results.checkSeq2.rows[0].nextval.should.equal('1')
-      results.checkSeq3.rows[0].nextval.should.equal('1')
-      done()
-    })
-  })
-
-  it('should delete all tables deprecated', function(done) {
-    async.auto({
-      connect: connect({database: 'cleaner'}),
-      clean: ['connect', databaseCleanerDeprecated],
-      check1: ['clean', checkEmptyTable({table: 'table1'})],
-      check2: ['clean', checkEmptyTable({table: 'table2'})],
-      check3: ['clean', checkEmptyTable({table: 'table3'})],
-      checkSeq1: ['clean', checkSequence({table: 'table1'})],
-      checkSeq2: ['clean', checkSequence({table: 'table2'})],
-      checkSeq3: ['clean', checkSequence({table: 'table3'})],
-    }, function(err, results) {
-      should.not.exist(err)
-      should(results.check1.rows.length).equal(0)
-      results.check2.rows.length.should.equal(0)
-      results.check3.rows.length.should.equal(0)
-      results.checkSeq1.rows[0].nextval.should.equal('1')
       results.checkSeq2.rows[0].nextval.should.equal('1')
       results.checkSeq3.rows[0].nextval.should.equal('1')
       done()
@@ -250,22 +226,16 @@ describe('postgres', function() {
     })
   })
 
-  it('should error cause of wrong type and options', function(done) {
+  it('should error cause of wrong type', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
     }, function(err, results) {
       should.not.exist(err)
-      try {
-        cleaner({type: 'wrong'}, results.connect[0], function() {})
-      } catch (e) {
-        e.message.should.eql('Unrecognized type: wrong')
-      }
-      try {
-        cleaner({wrong: 'delete'}, results.connect[0], function() {})
-      } catch (e) {
-        e.message.should.eql('"type" option is required')
-      }
-      done()
+      cleaner({type: 'wrong'}, results.connect[0])
+        .catch(function(e) {
+          e.message.should.eql('Unrecognized type: wrong')
+          done()
+        })
     })
   })
 })
