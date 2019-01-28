@@ -72,7 +72,7 @@ function databaseCleaner(options) {
 
 function connect(params) {
   return function connection(callback) {
-    const connectionString = `postgres://postgres@${dbHost}/${params.database}`
+    const connectionString = `postgres://discovery:discovery@${dbHost}/${params.database}`
 
     pg.connect(connectionString, callback)
   }

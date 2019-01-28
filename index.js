@@ -2,4 +2,4 @@
 
 const util = require('util')
 
-module.exports = util.promisify(require('./lib/cleaner'))
+module.exports = util.promisify(util.promisify(require('./lib/cleaner')))
