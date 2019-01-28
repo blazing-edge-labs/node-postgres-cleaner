@@ -23,10 +23,10 @@
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "pg": "^4.4.3",
-    "should": "^7.1.1"
+    "should": "^7.1.1",
+    "async": "^2.6.0"
   },
   "dependencies": {
-    "async": "^2.6.0"
   },
   "scripts": {
     "lint": "eslint .",

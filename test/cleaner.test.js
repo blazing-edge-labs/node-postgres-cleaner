@@ -62,6 +62,7 @@ function checkSequence(params) {
   }
 }
 
+// wrap promise to callback so we can still use old callback based tests
 function databaseCleaner(options) {
   return function(results, callback) {
     cleaner(options, results.connect[0])
@@ -72,7 +73,7 @@ function databaseCleaner(options) {
 
 function connect(params) {
   return function connection(callback) {
-    const connectionString = `postgres://discovery:discovery@${dbHost}/${params.database}`
+    const connectionString = `postgres://postgres@${dbHost}/${params.database}`
 
     pg.connect(connectionString, callback)
   }
@@ -226,7 +227,7 @@ describe('postgres', function() {
     })
   })
 
-  it('should error cause of wrong type', function(done) {
+  it('should error with wrong type', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
     }, function(err, results) {
