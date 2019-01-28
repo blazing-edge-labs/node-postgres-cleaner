@@ -26,8 +26,7 @@
     "should": "^7.1.1"
   },
   "dependencies": {
-    "async": "^2.6.0",
-    "lodash": "^4.17.1"
+    "async": "^2.6.0"
   },
   "scripts": {
     "lint": "eslint .",

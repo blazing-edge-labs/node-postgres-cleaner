@@ -130,7 +130,7 @@ describe('postgres', function() {
     })
   })
 
-  it('should delete all tables', function(done) {
+  it('should truncate all tables', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
       clean: ['connect', databaseCleaner({type: 'truncate'})],
