@@ -1,3 +1,7 @@
+## 2018.01.28, Version 1.0.2
+
+* update to work with latest pg
+
 ## 2018.01.26, Version 1.0.1
 
 * Remove all dependencies

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner) [![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master)
+[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner) [![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master) ![](https://img.shields.io/david/blazing-edge-labs/node-postgres-cleaner.svg)
 
 Postgres Cleaner
 ========================
@@ -19,12 +19,12 @@ $ npm install postgres-cleaner
 Usage
 ------
 ```javascript
-var cleaner = require('postgres-cleaner');
+var cleaner = require('postgres-cleaner')
 
 var options = {
   type: 'delete',
-  skipTables: ['SequelizeMeta']
-};
+  skipTables: ['SequelizeMeta'],
+}
 
 // db      - database connection object
 // options - cleaner options
@@ -56,29 +56,20 @@ $ yarn test
 
 For tests you need postgres database running.
 
+Using pg-promise
+-------------
+This lib expects pg database connection object. pg-promise does some further checks so to make it work use pg from pg-promise.
 
-License:
---------
+```javascript
+var pgp = require('pg-promise')({
+    // Initialization Options
+})
 
-(The MIT License)
+var db = pgp.pg.Pool({
+  connectionString: 'postgres://your:database@localohost/string'
+})
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-v
-v
+cleaner(options, db)
+  .then()
+  .catch()
+```
