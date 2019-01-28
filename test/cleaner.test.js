@@ -5,6 +5,7 @@ const cleaner = require('../')
 const async = require('async')
 
 const dbHost = process.env.POSTGRES_HOST || '127.0.0.1'
+const connectionStringNoDb = `postgres://postgres@${dbHost}/`
 
 const pg = require('pg')
 // increase pool size just for tests
@@ -14,14 +15,14 @@ pg.defaults.poolSize = 20
 function createDatabase(params) {
   return function(results, callback) {
     const q = `CREATE DATABASE ${params.database}`
-    results.connectPostgres[0].query(q, callback)
+    results.connectPostgres.query(q, callback)
   }
 }
 
 function dropDatabase(params) {
   return function(results, callback) {
     const q = `DROP DATABASE IF EXISTS ${  params.database}`
-    results.connectPostgres[0].query(q, callback)
+    results.connectPostgres.query(q, callback)
   }
 }
 
@@ -29,14 +30,14 @@ function createTable(params) {
   return function create(results, callback) {
     const q = `CREATE TABLE ${params.table}
     (id SERIAL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id));`
-    results.connect[0].query(q, callback)
+    results.connect.query(q, callback)
   }
 }
 
 function createTableNoId(params) {
   return function create(results, callback) {
     const q = `CREATE TABLE "${params.table}" (name VARCHAR(255));`
-    results.connect[0].query(q, callback)
+    results.connect.query(q, callback)
   }
 }
 
@@ -44,28 +45,29 @@ function insertValue(params) {
   return function insert(results, callback) {
     const q = `INSERT INTO "${params.table}" (name) VALUES ('lorem1');
                INSERT INTO "${params.table}" (name) VALUES ('lorem2');`
-    results.connect[0].query(q, callback)
+    results.connect.query(q, callback)
   }
 }
 
 function checkEmptyTable(params) {
   return function check(results, callback) {
     const q = `SELECT * FROM "${params.table}";`
-    results.connect[0].query(q, callback)
+    results.connect.query(q, callback)
   }
 }
 
 function checkSequence(params) {
   return function check(results, callback) {
     let q = `SELECT nextval('${params.table}_id_seq');`
-    results.connect[0].query(q, callback)
+    results.connect.query(q, callback)
   }
 }
 
 // wrap promise to callback so we can still use old callback based tests
 function databaseCleaner(options) {
+  // options.connectionString = `${connectionStringNoDb}cleaner`
   return function(results, callback) {
-    cleaner(options, results.connect[0])
+    cleaner(options, results.connect)
       .then(r => callback(null, r))
       .catch(callback)
   }
@@ -73,9 +75,11 @@ function databaseCleaner(options) {
 
 function connect(params) {
   return function connection(callback) {
-    const connectionString = `postgres://postgres@${dbHost}/${params.database}`
-
-    pg.connect(connectionString, callback)
+    const pool = new pg.Pool({
+      connectionString: `${connectionStringNoDb}${params.database}`,
+    })
+    callback(null, pool)
+    // pg.connect(`${connectionStringNoDb}${params.database}`, callback)
   }
 }
 
@@ -227,12 +231,11 @@ describe('postgres', function() {
     })
   })
 
-  it('should error with wrong type', function(done) {
+  it('should error with no connection string', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
     }, function(err, results) {
-      should.not.exist(err)
-      cleaner({type: 'wrong'}, results.connect[0])
+      cleaner({type: 'wrong'}, results.connect)
         .catch(function(e) {
           e.message.should.eql('Unrecognized type: wrong')
           done()
