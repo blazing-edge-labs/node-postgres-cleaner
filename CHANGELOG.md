@@ -1,3 +1,7 @@
+## 2018.01.26, Version 1.0.1
+
+* Remove all dependencies
+
 ## 2018.01.26, Version 1.0.0
 
 * BREAKING CHANGE: promise interface instead callback interface

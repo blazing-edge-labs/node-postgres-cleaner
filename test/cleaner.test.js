@@ -62,6 +62,7 @@ function checkSequence(params) {
   }
 }
 
+// wrap promise to callback so we can still use old callback based tests
 function databaseCleaner(options) {
   return function(results, callback) {
     cleaner(options, results.connect[0])
@@ -130,7 +131,7 @@ describe('postgres', function() {
     })
   })
 
-  it('should delete all tables', function(done) {
+  it('should truncate all tables', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
       clean: ['connect', databaseCleaner({type: 'truncate'})],
@@ -226,7 +227,7 @@ describe('postgres', function() {
     })
   })
 
-  it('should error cause of wrong type', function(done) {
+  it('should error with wrong type', function(done) {
     async.auto({
       connect: connect({database: 'cleaner'}),
     }, function(err, results) {
