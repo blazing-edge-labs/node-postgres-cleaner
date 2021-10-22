@@ -1,0 +1,44 @@
+name: Postgres Cleaner CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DATABASE_URL: "postgres://pcleaner:pcleaner@localhost/"
+
+jobs:
+  ci:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+    services:
+      postgres:
+        image: postgres:10-alpine
+        env:
+          POSTGRES_DB: pcleaner
+          POSTGRES_USER: pcleaner
+          POSTGRES_PASSWORD: pcleaner
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm i
+    - run: npm run lint
+    - run: npm run test
+    - run: npm run coverage

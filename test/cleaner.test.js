@@ -4,8 +4,7 @@ const should = require('should')
 const cleaner = require('../')
 const async = require('async')
 
-const dbHost = process.env.POSTGRES_HOST || '127.0.0.1'
-const connectionStringNoDb = `postgres://postgres@${dbHost}/`
+const connectionStringNoDb = process.env.DATABASE_URL
 
 const pg = require('pg')
 // increase pool size just for tests
