@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner.svg?branch=master)](https://travis-ci.org/blazing-edge-labs/node-postgres-cleaner) [![Coverage Status](https://coveralls.io/repos/github/blazing-edge-labs/node-postgres-cleaner/badge.svg?branch=master)](https://coveralls.io/github/blazing-edge-labs/node-postgres-cleaner?branch=master) ![](https://img.shields.io/david/blazing-edge-labs/node-postgres-cleaner.svg)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blazing-edge-labs/node-postgres-cleaner/Postgres%20Cleaner%20CI?style=for-the-badge) ![Coveralls](https://img.shields.io/coveralls/github/blazing-edge-labs/node-postgres-cleaner?style=for-the-badge)
 
 Postgres Cleaner
 ========================
@@ -47,14 +47,6 @@ What should I use?
 
 Truncate should be faster so we use truncate as a default behaviour if type is not provided. Use delete if you have a specific reason to use delete. You can read more about the differences [here](https://stackoverflow.com/questions/139630/whats-the-difference-between-truncate-and-delete-in-sql).
 
-Running tests
--------------
-
-```shell
-$ yarn test
-```
-
-For tests you need postgres database running.
 
 Using pg-promise
 -------------
