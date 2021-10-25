@@ -1,6 +1,6 @@
 {
   "name": "postgres-cleaner",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Easy postgres cleaner for node.",
   "main": "index.js",
   "repository": {
@@ -15,7 +15,7 @@
     "delete"
   ],
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 10.0.0"
   },
   "devDependencies": {
     "async": "^3.1.0",

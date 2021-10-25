@@ -22,7 +22,7 @@ Usage
 var cleaner = require('postgres-cleaner')
 
 var options = {
-  type: 'delete',
+  type: 'truncate',
   skipTables: ['SequelizeMeta'],
 }
 

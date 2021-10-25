@@ -1,8 +1,17 @@
-## 2018.01.28, Version 1.0.2
+## 2021.10.25, Version 1.0.5, Version 1.0.6
+
+* change to github actions
+* deps update
+
+## 2019.10.17, Version 1.0.3, Version 1.0.4
+
+* deps update
+
+## 2019.01.28, Version 1.0.2
 
 * update to work with latest pg
 
-## 2018.01.26, Version 1.0.1
+## 2019.01.26, Version 1.0.1
 
 * Remove all dependencies
 
